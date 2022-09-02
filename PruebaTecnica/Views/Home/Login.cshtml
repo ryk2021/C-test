@@ -1,0 +1,49 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+
+<h2>Login</h2>
+
+<form>
+    <div class="form-group">
+        <label for="userName">Email address</label>
+        <input type="text" class="form-control" id="userName" pattern="^\S+$" aria-describedby="emailHelp" placeholder="Ingrese Usuario">
+        <small id="emailHelp" class="form-text text-muted">Ingrese sus credenciales</small>
+    </div>
+    <div class="form-group">
+        <label for="contrasena">Password</label>
+        <input type="password" class="form-control" pattern="^\S+$" id="contrasena" placeholder="Ingrese su contraseña">
+    </div>    
+    <button type="button" id="btnLogin" class="btn btn-primary">Submit</button>
+</form>
+
+<script>    
+
+    document.getElementById('btnLogin').addEventListener('click', (e) => {
+        const user = document.getElementById('userName')
+        const pass = document.getElementById('contrasena')
+
+        if (user.value.replace(/\s/g, '').length > 0 && pass.value.replace(/\s/g, '').length > 0) {
+            const response = request({ URL: `Home/Validar?user=${user.value}&contrasena=${pass.value}` })
+            response.then(resp => {
+                if (resp.result === "OK") {
+                    window.location = '../Home/index'
+                }
+                contentElements.innerHTML = ''
+                resp.result.map(x => {
+                    contentElements.innerHTML += FieldForm(x)
+                })
+            }).catch(x => console.error(x))
+        }
+        else {
+            alert("Complete los campos")
+        }
+
+    })
+
+   
+
+</script>
+
