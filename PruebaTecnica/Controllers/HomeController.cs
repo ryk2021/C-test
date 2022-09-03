@@ -64,11 +64,11 @@ namespace PruebaTecnica.Controllers
             try
             {
                 //              "ConnectionStrings": {
-                //                  "DBContext": "Server=10.177.0.18;Database=NominaAtento;User Id=nomina;Password=nomina01;MultipleActiveResultSets=true"
+                //                  "DBContext": "Server=;Database=;User Id=;Password=;MultipleActiveResultSets=true"
 
                 //},                //return new SqlConnectionStringBuilder(configuration.GetConnectionString(:));
 
-                return new SqlConnectionStringBuilder("Server=10.177.0.18;Database=NominaAtento;User Id=nomina;Password=nomina01;MultipleActiveResultSets=true");
+                return new SqlConnectionStringBuilder("Server=;Database=;User Id=;Password=;MultipleActiveResultSets=true");
             }
             catch (Exception ex)
             {

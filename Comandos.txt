@@ -1,0 +1,72 @@
+Scaffold-DbContext -Connection name=DbContext Pomelo.EntityFrameworkCore.MySql -OutputDir Models -Force
+
+Scaffold-DbContext -Connection name=DbContext Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Force
+
+
+
+Install-Package Microsoft.EntityFrameworkCore
+Install-Package Microsoft.EntityFrameworkCore.Design
+Install-Package Microsoft.EntityFrameworkCore.Tools
+Install-Package Microsoft.EntityFrameworkCore.SqlServer
+
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "ConnectionStrings": {
+    "DBContext": "Server=localhost;Port=3306;Database=Laboratorio;User=root;Password=admin"
+
+  }
+}
+
+/****************************************************************************
+using LaboratorioClinico.Models;
+using LaboratorioClinico.Middlewares;
+using Microsoft.EntityFrameworkCore;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddRazorPages()
+    .AddRazorRuntimeCompilation();
+
+
+// Add services to the container.
+builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<LaboratorioContext>(options =>
+{
+    var connectionString = builder.Configuration.GetConnectionString("DBContext");
+        options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+});
+
+builder.Services.AddSession(options => options.IdleTimeout = TimeSpan.FromHours(10));
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Home/Error");
+}
+
+
+
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.UseAuthorization();
+
+app.UseSession();
+app.UseMiddleware<AuthenticationMiddleware>();
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Login}/{action=Index}/{id?}");
+
+app.Run();
+
+/****************************************************************************
